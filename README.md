@@ -8,7 +8,7 @@
 ## English
 
 ### Overview
-`gdocs2json` is a Google Apps Script add-on that extracts the entire content of a Google Doc along with its comments into a unified, structured JSON file. It features a premium, glassmorphic dark-themed user interface to trigger the download directly from Google Docs.
+`gdocs2json` is a Google Apps Script add-on that extracts the entire content of a Google Doc along with its comments into a unified, structured JSON file. 
 
 ### Features
 - **Complete Export**: Exports the full structured body, headers, footers, footnotes, and embedded objects (images) metadata.
@@ -42,7 +42,7 @@ For a detailed walkthrough, including internal domain-wide publishing to Google 
 ## Español
 
 ### Descripción General
-`gdocs2json` es un complemento de Google Apps Script que extrae todo el contenido de un documento de Google Docs y sus comentarios en un archivo JSON estructurado y unificado. Cuenta con una interfaz de usuario en modo oscuro con diseño glassmorphic para descargar el archivo directamente desde Google Docs.
+`gdocs2json` es un complemento de Google Apps Script que extrae todo el contenido de un documento de Google Docs y sus comentarios en un archivo JSON estructurado y unificado. 
 
 ### Características
 - **Exportación Completa**: Exporta la estructura completa del cuerpo, encabezados, pies de página, notas al pie y metadatos de objetos incrustados (imágenes).
