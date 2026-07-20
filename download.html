@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Exportar a JSON</title>
+  <style>
+    /* Premium Glassmorphic Dark Theme */
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1c1c28 0%, #0d0d11 100%);
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.07);
+      --card-glow: rgba(99, 102, 241, 0.1);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --primary-color: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.4);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+      --error-color: #f43f5e;
+      --error-bg: rgba(244, 63, 94, 0.1);
+      --error-border: rgba(244, 63, 94, 0.2);
+      --success-color: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.1);
+      --success-border: rgba(16, 185, 129, 0.2);
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Aura glow in background */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      background: radial-gradient(circle, var(--card-glow) 0%, transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 410px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      text-align: center;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    }
+    
+    .container:hover {
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.05);
+    }
+    
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    p {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0 0 28px 0;
+    }
+    
+    /* Button Styles with Premium Glow */
+    .btn {
+      position: relative;
+      width: 100%;
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px var(--primary-glow);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none;
+      overflow: hidden;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .btn:hover:not(:disabled)::before {
+      left: 100%;
+    }
+    
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5), 0 0 15px rgba(217, 70, 239, 0.3);
+    }
+    
+    .btn:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px var(--primary-glow);
+    }
+    
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+    
+    /* Estilos para el botón secundario glassmorphic */
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+    
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+    }
+    
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    
+    /* Status Section styling */
+    .status-container {
+      margin-top: 24px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 10px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .status-text {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    
+    /* Contextual states */
+    .status-container.loading {
+      display: flex;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .status-container.loading .status-text {
+      color: var(--text-secondary);
+    }
+    
+    .status-container.success {
+      display: flex;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+    }
+    .status-container.success .status-text {
+      color: var(--success-color);
+    }
+    
+    .status-container.error {
+      display: flex;
+      background: var(--error-bg);
+      border: 1px solid var(--error-border);
+    }
+    .status-container.error .status-text {
+      color: var(--error-color);
+    }
+    
+    /* Footer attribution */
+    .footer {
+      position: absolute;
+      bottom: 16px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.2);
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Exportar a JSON</h1>
+    <p>Exporta el contenido completo del documento y sus comentarios en un archivo unificado y descargable.</p>
+    
+    <div class="btn-container">
+      <button id="exportBtn" class="btn" onclick="startExport(false)">
+        <span>Exportación Completa</span>
+      </button>
+      <button id="exportReducedBtn" class="btn btn-secondary" onclick="startExport(true)">
+        <span>Exportación Reducida</span>
+      </button>
+    </div>
+    
+    <div id="statusContainer" class="status-container">
+      <div id="spinner" class="spinner"></div>
+      <div id="statusText" class="status-text">Iniciando exportación...</div>
+    </div>
+  </div>
+  
+  <div class="footer">EXPORTADOR DE DOCUMENTOS v1.0</div>
+
+  <script>
+    function startExport(reduced) {
+      const btnFull = document.getElementById('exportBtn');
+      const btnReduced = document.getElementById('exportReducedBtn');
+      const statusContainer = document.getElementById('statusContainer');
+      const spinner = document.getElementById('spinner');
+      const statusText = document.getElementById('statusText');
+      
+      // Activar estado de carga en la interfaz deshabilitando ambos botones
+      btnFull.disabled = true;
+      btnReduced.disabled = true;
+      statusContainer.className = 'status-container loading';
+      statusContainer.style.display = 'flex';
+      spinner.style.display = 'block';
+      statusText.innerText = 'Consultando la API de Google Docs y Drive...';
+      
+      google.script.run
+        .withSuccessHandler(function(jsonString) {
+          try {
+            // Analizar JSON para obtener el título original de manera segura
+            const data = JSON.parse(jsonString);
+            const rawTitle = data.documentTitle || 'documento';
+            
+            // Generar un nombre de archivo seguro y limpio
+            const safeTitle = rawTitle
+              .replace(/[^a-z0-9\s_-]/gi, '') // Eliminar caracteres no permitidos
+              .trim()
+              .replace(/\s+/g, '_')           // Reemplazar espacios por guiones bajos
+              .toLowerCase();
+              
+            const suffix = reduced ? '_reduced_export.json' : '_export.json';
+            const fileName = `${safeTitle}${suffix}`;
+            
+            // Crear Blob para descargar localmente en el navegador
+            const blob = new Blob([jsonString], { type: 'application/json;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            // Mostrar estado exitoso
+            spinner.style.display = 'none';
+            statusContainer.className = 'status-container success';
+            statusText.innerText = '¡Exportación completada con éxito!';
+            
+            // Restaurar botones después de unos segundos
+            setTimeout(function() {
+              btnFull.disabled = false;
+              btnReduced.disabled = false;
+              statusContainer.style.display = 'none';
+            }, 5000);
+            
+          } catch (e) {
+            showError('Error al procesar los datos de exportación: ' + e.message);
+          }
+        })
+        .withFailureHandler(function(error) {
+          showError(error.message);
+        })
+        .getExportData(reduced);
+    }
+    
+    function showError(message) {
+      const btnFull = document.getElementById('exportBtn');
+      const btnReduced = document.getElementById('exportReducedBtn');
+      const statusContainer = document.getElementById('statusContainer');
+      const spinner = document.getElementById('spinner');
+      const statusText = document.getElementById('statusText');
+      
+      btnFull.disabled = false;
+      btnReduced.disabled = false;
+      spinner.style.display = 'none';
+      statusContainer.className = 'status-container error';
+      statusText.innerText = message;
+    }
+  </script>
+</body>
+</html>
