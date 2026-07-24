@@ -3,24 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gdocs2json - Documentation & Presentation</title>
+    <title>gdocs2json - Documentation</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <h1>gdocs2json</h1>
-        <p>Google Docs to JSON Converter Project</p>
+        <p>Google Docs to JSON Converter Project / Proyecto de Conversión de Google Docs a JSON</p>
+        <nav>
+            <a href="#en">English</a> | <a href="#es">Español</a>
+        </nav>
     </header>
-    <main>
-        <a href="documentacion.html" class="card">
-            <h2>Documentación</h2>
-            <p>View the project documentation, architecture, and API details.</p>
-        </a>
-        <a href="presentacion.html" class="card">
-            <h2>Presentación</h2>
-            <p>View the project presentation slides.</p>
-        </a>
-    </main>
+    
+    <div class="container">
+        <!-- English Section -->
+        <section id="en">
+            <h2 class="lang-title">English Documentation</h2>
+            
+            <article id="readme-en">
+                <h3>Overview</h3>
+                <p><code>gdocs2json</code> is a Google Apps Script add-on that extracts the entire content of a Google Doc along with its comments into a unified, structured JSON file.</p>
+                
+                <h4>Features</h4>
+                <ul>
+                    <li><strong>Complete Export</strong>: Exports the full structured body, headers, footers, footnotes, and embedded objects (images) metadata.</li>
+                    <li><strong>Reduced Export</strong>: Exports a simplified version containing plaintext body, plaintext footnotes, and embedded objects metadata.</li>
+                    <li><strong>Comment Extraction</strong>: Retrieves active comments and their replies (excluding deleted ones) using the Google Drive API v3.</li>
+                    <li><strong>Modern UI</strong>: An aesthetic glassmorphic dark-mode modal dialog embedded directly into Google Docs.</li>
+                    <li><strong>Deployment Tools</strong>: Includes a Python helper script to automatically generate standard icons for Google Workspace Marketplace publishing.</li>
+                </ul>
+                
+                <h4>Project Structure</h4>
+                <ul>
+                    <li><code>Code.gs</code>: Core Google Apps Script handling document traversal, comment list retrieval, UI creation, and server-side logic.</li>
+                    <li><code>download.html</code>: The HTML/JS client side for the user dialog with a modern dark theme and dynamic download triggers.</li>
+                    <li><code>appsscript.json</code>: Manifest file defining the scopes, advanced services (Drive API, Docs API), and addon configuration.</li>
+                    <li><code>resize_icons.py</code>: Python utility to resize a base icon into mandatory dimensions (<code>32x32</code>, <code>128x128</code>, <code>220x140</code>) for publishing.</li>
+                    <li><code>INSTRUCCIONES.md</code>: Step-by-step setup guide (in Spanish) for personal container-bound scripts or domain-wide deployments.</li>
+                </ul>
+            </article>
+
+            <article id="guide-en">
+                <h3>Installation Guide</h3>
+                <p>This document details the steps required to configure and use the document and comments export add-on privately (for personal use) or internally within a Google Workspace organization.</p>
+                
+                <hr />
+                <h4>Method 1: Private / Personal Use (Container-bound Script)</h4>
+                <p>This method is the fastest for individual users who want to use the add-on in a specific document without publishing it.</p>
+                
+                <h5>Step 1: Open the Apps Script Editor</h5>
+                <ol>
+                    <li>Open the Google Docs document where you want to use the add-on.</li>
+                    <li>In the top menu, go to <strong>Extensions</strong> &gt; <strong>Apps Script</strong>.</li>
+                </ol>
+                
+                <h5>Step 2: Copy the Project Files</h5>
+                <ol>
+                    <li>In the Apps Script editor, replace the entire content of the default file <code>Código.gs</code> (or <code>Code.gs</code>) with the content of the <code>Code.gs</code> file from this repository. Rename the editor file to <code>Code.gs</code> if desired.</li>
+                    <li>Click the <strong>+</strong> (Add a file) button next to "Files" and select <strong>HTML</strong>.</li>
+                    <li>Name the new file <code>download</code> (the editor will add the <code>.html</code> extension automatically).</li>
+                    <li>Replace the entire content of the newly created <code>download.html</code> file with the content of the <code>download.html</code> file from this repository.</li>
+                    <li>Go to <strong>Project Settings</strong> (gear icon in the left sidebar) and check the option <strong>Show "appsscript.json" manifest file in editor</strong>.</li>
+                    <li>Return to the <strong>Editor</strong> tab (code <code>&lt; &gt;</code> icon), open the <code>appsscript.json</code> file which is now visible, and replace all its content with the content of the <code>appsscript.json</code> file from this repository.</li>
+                    <li>Save the project by clicking the disk icon (Save project).</li>
+                </ol>
+                
+                <h5>Step 3: Enable Advanced Services (Alternative Manual Method)</h5>
+                <blockquote>
+                    <p><strong>NOTE:</strong> If you copied the <code>appsscript.json</code> file in Step 2, this step will already be automatically configured with the required services and scopes, and no manual action is needed.</p>
+                    <p>If you prefer to add them manually via the interface:<br />
+                    1. In the left sidebar of the Apps Script editor, click the <strong>+</strong> button next to <strong>Services</strong>.<br />
+                    2. In the list of services:<br />
+                       * Look for <strong>Drive API</strong> and select it. Ensure the version is <strong>v3</strong> (if prompted) and the identifier is <code>Drive</code>. Click <strong>Add</strong>.<br />
+                       * Click <strong>+</strong> (Services) again, look for <strong>Google Docs API</strong>, ensure the identifier is <code>Docs</code>, and click <strong>Add</strong>.</p>
+                </blockquote>
+                
+                <h5>Step 4: Authorization and Execution</h5>
+                <ol>
+                    <li>Return to your Google Docs document tab and reload the page.</li>
+                    <li>A new menu will appear in the top bar called <strong>Document Exporter</strong> (or under <strong>Extensions</strong> &gt; <strong>Add-ons</strong>).</li>
+                    <li>Click on <strong>Document Exporter</strong> &gt; <strong>Export to JSON...</strong>.</li>
+                    <li>Google will request security authorization. Click <strong>Continue</strong>.</li>
+                    <li>Select your Google account.</li>
+                    <li>On the "Google hasn't verified this app" warning screen, click <strong>Advanced</strong>.</li>
+                    <li>Click <strong>Go to Document Exporter (unsafe)</strong>.</li>
+                    <li>Grant the required permissions by clicking <strong>Allow</strong>.</li>
+                    <li>The exporter interface will open. Select the desired export method to start the download.</li>
+                </ol>
+                
+                <hr />
+                <h4>Method 2: Internal Deployment for an Organization (Google Workspace)</h4>
+                <p>If you want the add-on to be available to multiple users in your Google Workspace domain without everyone having to manually copy the code, you must publish it as an internal organization add-on.</p>
+                
+                <h5>Prerequisites</h5>
+                <ul>
+                    <li>An admin or developer account in the Google Workspace console.</li>
+                    <li>Access to Google Cloud Console with permissions to create projects in the organization.</li>
+                </ul>
+                
+                <h5>Step 1: Create a Standalone Script</h5>
+                <ol>
+                    <li>Go to <a href="https://script.google.com/">script.google.com</a> with your organizational account.</li>
+                    <li>Create a <strong>New project</strong>.</li>
+                    <li>Copy and configure the <code>Code.gs</code>, <code>download.html</code>, and the manifest <code>appsscript.json</code> files as described in Method 1.</li>
+                </ol>
+                
+                <h5>Step 2: Link to a Google Cloud Project (GCP)</h5>
+                <ol>
+                    <li>In the Apps Script editor, go to <strong>Project Settings</strong> (gear icon).</li>
+                    <li>Check the box <strong>Show "appsscript.json" manifest file in editor</strong>.</li>
+                    <li>Go to <a href="https://console.cloud.google.com/">Google Cloud Console</a>.</li>
+                    <li>Create a new GCP project specifically for this add-on.</li>
+                    <li>Copy the <strong>Project number</strong> (available on the GCP project info dashboard).</li>
+                    <li>Return to the Apps Script project settings, click <strong>Change project</strong>, and enter the GCP Project Number.</li>
+                </ol>
+                
+                <h5>Step 3: Configure OAuth Consent Screen</h5>
+                <ol>
+                    <li>In Google Cloud Console, go to <strong>APIs &amp; Services</strong> &gt; <strong>OAuth consent screen</strong>.</li>
+                    <li>Select <strong>Internal</strong> as the User Type so that only accounts from your organization can access it.</li>
+                    <li>Complete the required fields of the application profile.</li>
+                    <li>In the <strong>Scopes</strong> section, manually add the permissions required by the script:
+                        <ul>
+                            <li><code>https://www.googleapis.com/auth/documents.currentonly</code> (active document access)</li>
+                            <li><code>https://www.googleapis.com/auth/drive.readonly</code> (reading comments via Drive API)</li>
+                            <li><code>https://www.googleapis.com/auth/documents</code> (if using advanced Docs API)</li>
+                        </ul>
+                    </li>
+                    <li>Save and continue.</li>
+                </ol>
+                
+                <h5>Step 4: Publish the Editor Add-on</h5>
+                <ol>
+                    <li>In Google Cloud Console, go to <strong>APIs &amp; Services</strong> &gt; <strong>Library</strong>.</li>
+                    <li>Search for and enable the <strong>Google Workspace Marketplace SDK</strong> API.</li>
+                    <li>After enabling it, go to <strong>APIs &amp; Services</strong> &gt; <strong>Google Workspace Marketplace SDK</strong> &gt; <strong>App Configuration</strong>.</li>
+                    <li>Configure the editor add-on integration parameters:
+                        <ul>
+                            <li>Check the <strong>Google Docs add-on</strong> box.</li>
+                            <li>In <strong>Apps Script project ID</strong>, enter the ID of your Apps Script script.</li>
+                            <li>Define the script deployment version.</li>
+                        </ul>
+                    </li>
+                    <li>Go to the <strong>Store Listing</strong> tab within the Marketplace SDK:
+                        <ul>
+                            <li>Fill out the listing information (name, descriptions, screenshots, icons).</li>
+                            <li>In the visibility section, make sure to select <strong>Private (only for domain users)</strong>.</li>
+                        </ul>
+                    </li>
+                    <li>Click <strong>Publish</strong>.</li>
+                </ol>
+                
+                <h5>Step 5: Installation by Users</h5>
+                <p>Once published in the organization's Workspace Marketplace:</p>
+                <ul>
+                    <li><strong>Individual Installation:</strong> Domain users can go to a Google Docs document, select <strong>Extensions</strong> &gt; <strong>Add-ons</strong> &gt; <strong>Get add-ons</strong>, search for the application in the internal organization tab, and install it.</li>
+                    <li><strong>Forced Installation (Admin Console):</strong> The Workspace administrator can go to the Google Admin console, search for the internally published application, and automatically force its installation for the entire organization or specific organizational units.</li>
+                </ul>
+            </article>
+        </section>
+
+        <!-- Español Section -->
+        <section id="es">
+            <h2 class="lang-title">Documentación en Español</h2>
+            
+            <article id="readme-es">
+                <h3>Descripción General</h3>
+                <p><code>gdocs2json</code> es un complemento de Google Apps Script que extrae todo el contenido de un documento de Google Docs y sus comentarios en un archivo JSON estructurado y unificado.</p>
+                
+                <h4>Características</h4>
+                <ul>
+                    <li><strong>Exportación Completa</strong>: Exporta la estructura completa del cuerpo, encabezados, pies de página, notas al pie y metadatos de objetos incrustados (imágenes).</li>
+                    <li><strong>Exportación Reducida</strong>: Exporta una versión simplificada con texto plano del cuerpo, notas al pie y metadatos de objetos incrustados.</li>
+                    <li><strong>Extracción de Comentarios</strong>: Recupera los comentarios activos y sus respuestas (excluyendo los eliminados) a través de la API de Google Drive v3.</li>
+                    <li><strong>Interfaz Moderna</strong>: Diálogo modal estético en modo oscuro integrado directamente en Google Docs.</li>
+                    <li><strong>Herramientas de Despliegue</strong>: Incluye un script en Python para generar automáticamente los iconos requeridos para su publicación en Google Workspace Marketplace.</li>
+                </ul>
+                
+                <h4>Estructura del Proyecto</h4>
+                <ul>
+                    <li><code>Code.gs</code>: Código principal de Google Apps Script que maneja el recorrido del documento, obtención de comentarios, creación de la interfaz y la lógica del lado del servidor.</li>
+                    <li><code>download.html</code>: Interfaz del cliente en HTML/JS con un tema oscuro moderno y controladores de descarga dinámica.</li>
+                    <li><code>appsscript.json</code>: Archivo de manifiesto que define los permisos (scopes), servicios avanzados (Drive API, Docs API) y la configuración del complemento.</li>
+                    <li><code>resize_icons.py</code>: Utilidad en Python para redimensionar un icono base a las dimensiones obligatorias (<code>32x32</code>, <code>128x128</code>, <code>220x140</code>) para la publicación.</li>
+                    <li><code>INSTRUCCIONES.md</code>: Guía de configuración paso a paso (en español) para uso personal o despliegues organizacionales.</li>
+                </ul>
+            </article>
+
+            <article id="guide-es">
+                <h3>Guía de Configuración e Instalación</h3>
+                <p>Este documento detalla los pasos necesarios para configurar y utilizar el complemento de exportación de documentos y comentarios de forma privada (para uso personal) o de forma interna dentro de una organización de Google Workspace.</p>
+                
+                <hr />
+                <h4>Método 1: Uso Privado / Personal (Script Contenedor)</h4>
+                <p>Este método es el más rápido para usuarios individuales que desean utilizar el complemento en un documento específico sin realizar publicaciones.</p>
+                
+                <h5>Paso 1: Abrir el Editor de Apps Script</h5>
+                <ol>
+                    <li>Abra el documento de Google Docs donde desea utilizar el complemento.</li>
+                    <li>En el menú superior, diríjase a <strong>Extensiones</strong> &gt; <strong>Apps Script</strong>.</li>
+                </ol>
+                
+                <h5>Paso 2: Copiar los Archivos del Proyecto</h5>
+                <ol>
+                    <li>En el editor de Apps Script, reemplace todo el contenido del archivo predeterminado <code>Código.gs</code> con el contenido del archivo <code>Code.gs</code> de este repositorio. Renombre el archivo del editor a <code>Code.gs</code> si lo desea.</li>
+                    <li>Haga clic en el botón <strong>+</strong> (Agregar un archivo) junto a "Archivos" y seleccione <strong>HTML</strong>.</li>
+                    <li>Nombre al nuevo archivo <code>download</code> (el editor añadirá la extensión <code>.html</code> automáticamente).</li>
+                    <li>Reemplace todo el contenido del archivo <code>download.html</code> recién creado con el contenido del archivo <code>download.html</code> de este repositorio.</li>
+                    <li>Diríjase a la <strong>Configuración del proyecto</strong> (icono de engranaje en la barra lateral izquierda) y marque la opción <strong>Mostrar el archivo de manifiesto "appsscript.json" en el editor</strong>.</li>
+                    <li>Regrese a la pestaña <strong>Editor</strong> (icono de código <code>&lt; &gt;</code>), abra el archivo <code>appsscript.json</code> que ahora es visible y reemplace todo su contenido con el contenido del archivo <code>appsscript.json</code> de este repositorio.</li>
+                    <li>Guarde el proyecto haciendo clic en el icono del disco (Guardar proyecto).</li>
+                </ol>
+                
+                <h5>Paso 3: Habilitar los Servicios Avanzados (Método Alternativo Manual)</h5>
+                <blockquote>
+                    <p><strong>NOTA:</strong> Si en el Paso 2 copió el archivo <code>appsscript.json</code>, este paso ya se habrá configurado automáticamente con los servicios y alcances necesarios y no requiere acción manual.</p>
+                    <p>Si prefiere agregarlos manualmente a través de la interfaz:<br />
+                    1. En la barra lateral izquierda del editor de Apps Script, haga clic en el botón <strong>+</strong> junto a <strong>Servicios</strong>.<br />
+                    2. En la lista de servicios:<br />
+                       * Busque <strong>Drive API</strong> y selecciónelo. Asegúrese de que la versión sea la <strong>v3</strong> (si se le solicita) y que el identificador sea <code>Drive</code>. Haga clic en <strong>Añadir</strong>.<br />
+                       * Haga clic nuevamente en <strong>+</strong> (Servicios), busque <strong>Google Docs API</strong>, verifique que el identificador sea <code>Docs</code> y haga clic en <strong>Añadir</strong>.</p>
+                </blockquote>
+                
+                <h5>Paso 4: Autorización y Ejecución</h5>
+                <ol>
+                    <li>Regrese a la pestaña de su documento de Google Docs y recargue la página.</li>
+                    <li>Aparecerá un nuevo menú en la barra superior llamado <strong>Exportador de Documento</strong> (o bajo <strong>Extensiones</strong> &gt; <strong>Complementos</strong>).</li>
+                    <li>Haga clic en <strong>Exportador de Documento</strong> &gt; <strong>Exportar a JSON...</strong>.</li>
+                    <li>Google solicitará autorización de seguridad. Haga clic en <strong>Continuar</strong>.</li>
+                    <li>Seleccione su cuenta de Google.</li>
+                    <li>En la pantalla de advertencia "Google no ha verificado esta aplicación", haga clic en <strong>Configuración avanzada</strong>.</li>
+                    <li>Haga clic en <strong>Ir a Exportador a JSON (no seguro)</strong>.</li>
+                    <li>Conceda los permisos requeridos haciendo clic en <strong>Permitir</strong>.</li>
+                    <li>Se abrirá la interfaz del exportador. Seleccione el método de exportación deseado para iniciar la descarga.</li>
+                </ol>
+                
+                <hr />
+                <h4>Método 2: Despliegue Interno para una Organización (Google Workspace)</h4>
+                <p>Si desea que el complemento esté disponible para múltiples usuarios de su dominio de Google Workspace sin que cada uno deba copiar el código manualmente, debe publicarlo como un complemento interno de la organización.</p>
+                
+                <h5>Requisitos Previos</h5>
+                <ul>
+                    <li>Una cuenta de administrador o desarrollador en la consola de Google Workspace.</li>
+                    <li>Acceso a Google Cloud Console con permisos para crear proyectos en la organización.</li>
+                </ul>
+                
+                <h5>Paso 1: Crear un Script Independiente</h5>
+                <ol>
+                    <li>Acceda a <a href="https://script.google.com/">script.google.com</a> con su cuenta organizativa.</li>
+                    <li>Cree un <strong>Nuevo proyecto</strong>.</li>
+                    <li>Copie y configure los archivos <code>Code.gs</code>, <code>download.html</code> y el archivo de manifiesto <code>appsscript.json</code> tal como se describe en el Método 1.</li>
+                </ol>
+                
+                <h5>Paso 2: Vincular a un Proyecto de Google Cloud (GCP)</h5>
+                <ol>
+                    <li>En el editor de Apps Script, vaya a <strong>Configuración del proyecto</strong> (icono de engranaje).</li>
+                    <li>Marque la casilla <strong>Mostrar el archivo de manifiesto "appsscript.json" en el editor</strong>.</li>
+                    <li>Vaya a <a href="https://console.cloud.google.com/">Google Cloud Console</a>.</li>
+                    <li>Cree un nuevo proyecto de GCP específico para este complemento.</li>
+                    <li>Copie el <strong>Número de proyecto</strong> (disponible en el panel de información del proyecto de GCP).</li>
+                    <li>Regrese a la configuración del proyecto de Apps Script, haga clic en <strong>Cambiar de proyecto</strong> e introduzca el Número del proyecto de GCP.</li>
+                </ol>
+                
+                <h5>Paso 3: Configurar la Pantalla de Consentimiento OAuth</h5>
+                <ol>
+                    <li>En Google Cloud Console, vaya a <strong>API y servicios</strong> &gt; <strong>Pantalla de consentimiento de OAuth</strong>.</li>
+                    <li>Seleccione <strong>Interno</strong> como el Tipo de usuario (User Type) para que solo las cuentas de su organización puedan acceder.</li>
+                    <li>Complete los campos obligatorios del perfil de la aplicación.</li>
+                    <li>En la sección <strong>Permisos (Scopes)</strong>, agregue manualmente los permisos requeridos por el script:
+                        <ul>
+                            <li><code>https://www.googleapis.com/auth/documents.currentonly</code> (acceso al documento activo)</li>
+                            <li><code>https://www.googleapis.com/auth/drive.readonly</code> (lectura de comentarios mediante Drive API)</li>
+                            <li><code>https://www.googleapis.com/auth/documents</code> (si se utiliza la API de Docs avanzada)</li>
+                        </ul>
+                    </li>
+                    <li>Guarde y continúe.</li>
+                </ol>
+                
+                <h5>Paso 4: Publicar el Complemento de Editor</h5>
+                <ol>
+                    <li>En Google Cloud Console, vaya a <strong>API y servicios</strong> &gt; <strong>Biblioteca</strong>.</li>
+                    <li>Busque e active la API <strong>Google Workspace Marketplace SDK</strong>.</li>
+                    <li>Tras activarla, vaya a <strong>API y servicios</strong> &gt; <strong>Google Workspace Marketplace SDK</strong> &gt; <strong>Configuración</strong>.</li>
+                    <li>Configure los parámetros de integración del complemento de editor:
+                        <ul>
+                            <li>Active la casilla <strong>Extensiones de Google Docs</strong>.</li>
+                            <li>En <strong>ID de script del proyecto</strong>, introduzca el ID de su script de Apps Script.</li>
+                            <li>Defina la versión de despliegue del script.</li>
+                        </ul>
+                    </li>
+                    <li>Vaya a la pestaña <strong>Publicar en App Store</strong> dentro del SDK de Marketplace:
+                        <ul>
+                            <li>Rellene la información de la ficha (nombre, descripciones, capturas de pantalla, iconos).</li>
+                            <li>En la sección de visibilidad, asegúrese de seleccionar <strong>Privado (solo para usuarios del dominio)</strong>.</li>
+                        </ul>
+                    </li>
+                    <li>Haga clic en <strong>Publicar</strong>.</li>
+                </ol>
+                
+                <h5>Paso 5: Instalación por parte de los Usuarios</h5>
+                <p>Una vez publicado en la Workspace Marketplace de la organización:</p>
+                <ul>
+                    <li><strong>Instalación Individual:</strong> Los usuarios del dominio pueden ir a un documento de Google Docs, seleccionar <strong>Extensiones</strong> &gt; <strong>Complementos</strong> &gt; <strong>Obtener complementos</strong>, buscar la aplicación en la pestaña interna de la organización e instalarla.</li>
+                    <li><strong>Instalación Forzada (Consola de Administración):</strong> El administrador de Workspace puede ingresar a la consola de administración de Google, buscar la aplicación publicada internamente y forzar la instalación a toda la organización o a unidades organizativas específicas de forma automática.</li>
+                </ul>
+            </article>
+        </section>
+    </div>
+    
     <footer>
         &copy; 2026 gdocs2json Project
     </footer>

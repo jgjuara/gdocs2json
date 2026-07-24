@@ -1,9 +1,10 @@
 :root {
   --primary-color: #6200ea;
-  --secondary-color: #b388ff;
-  --background: #121212;
-  --surface: #1e1e1e;
-  --text: #ffffff;
+  --secondary-color: #3700b3;
+  --background: #f8f9fa;
+  --surface: #ffffff;
+  --text: #212529;
+  --border-color: #e9ecef;
 }
 
 body {
@@ -11,60 +12,124 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--background);
   color: var(--text);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  line-height: 1.6;
 }
 
 header {
   background-color: var(--surface);
   padding: 2rem;
   text-align: center;
-  border-bottom: 2px solid var(--primary-color);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 h1 {
   margin: 0;
   font-size: 2.5rem;
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
-main {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem;
+header p {
+  color: #6c757d;
+  margin-top: 0.5rem;
 }
 
-.card {
-  background-color: var(--surface);
-  padding: 2rem;
-  border-radius: 12px;
-  text-align: center;
+nav {
+  margin-top: 1rem;
+}
+
+nav a {
+  color: var(--primary-color);
   text-decoration: none;
-  color: var(--text);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 250px;
-  border: 1px solid #333;
+  font-weight: bold;
+  margin: 0 10px;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(98, 0, 234, 0.3);
-  border-color: var(--primary-color);
+nav a:hover {
+  text-decoration: underline;
 }
 
-.card h2 {
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+section {
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  border: 1px solid var(--border-color);
+}
+
+.lang-title {
   color: var(--secondary-color);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
   margin-top: 0;
+}
+
+article {
+  margin-top: 2rem;
+}
+
+h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+h4 {
+  color: #495057;
+  margin-top: 1.5rem;
+}
+
+h5 {
+  color: #495057;
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+}
+
+ul, ol {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+code {
+  background-color: #f1f3f5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #d63384;
+}
+
+blockquote {
+  background-color: #e7f5ff;
+  border-left: 4px solid #339af0;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 0 4px 4px 0;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 2rem 0;
 }
 
 footer {
   text-align: center;
-  padding: 1rem;
+  padding: 2rem;
   background-color: var(--surface);
   font-size: 0.9rem;
-  color: #888;
+  color: #6c757d;
+  border-top: 1px solid var(--border-color);
 }
